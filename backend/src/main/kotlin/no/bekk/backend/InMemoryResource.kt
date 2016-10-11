@@ -17,7 +17,7 @@ class InMemoryResource {
         return ArrayList(todos.values)
     }
 
-    @RequestMapping(value = "v1", method = arrayOf(RequestMethod.PUT))
+    @RequestMapping(value = "v1", method = arrayOf(RequestMethod.POST))
     fun new(@RequestBody todo: Todo) : ResponseEntity<Any> {
         if (todo.id != -1) {
             return ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -29,7 +29,7 @@ class InMemoryResource {
         return ResponseEntity(todoWithId, HttpStatus.OK)
     }
 
-    @RequestMapping(value = "v1", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = "v1", method = arrayOf(RequestMethod.PUT))
     fun update(@RequestBody todo: Todo) : ResponseEntity<Any> {
         if (!todos.contains(todo.id)) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
