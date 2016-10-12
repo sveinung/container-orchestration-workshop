@@ -10,6 +10,7 @@ class CorsFilter : Filter {
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         if (response is HttpServletResponse) {
             response.addHeader("Access-Control-Allow-Origin", "*")
+            response.addHeader("Access-Control-Allow-Headers", "Content-Type")
         }
         chain.doFilter(request, response)
     }
