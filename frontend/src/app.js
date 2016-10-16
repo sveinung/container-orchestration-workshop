@@ -12,15 +12,14 @@ var Todo = React.createClass({
                 <input
                     type="checkbox"
                     label="Done?"
-                    value={this.state.done}
-                    onChange={this.handleChange.bind(this, this.props.done)}/>
+                    checked={this.state.done}
+                    onChange={this.handleChange}/>
             </li>
         );
     },
 
     handleChange: function(done) {
-        this.setState({done: this.state.done});
-        this.props.updateItem(this.props.id, this.state.done);
+        this.props.updateItem(this.props.id, done.target.checked);
     }
 });
 
@@ -46,16 +45,29 @@ var Todos = React.createClass({
                 return todo;
             }
         });
-        var todoToUpdate = this.state.todos.filter((todo) => {
+        var todoToUpdate = this.state.todos.find((todo) => {
             if (todo.id === id) {
                 return todo;
             }
         });
-
-        var updatedTodo = {};
-
         todoToUpdate.done = done;
-        this.setState({todos: this.state.todos});
+
+        var updatedTodos = otherTodos.concat(todoToUpdate);
+
+        $.ajax({
+            url: this.props.url,
+            dataType: "json",
+            contentType: "application/json",
+            type: "PUT",
+            data: JSON.stringify(todoToUpdate),
+            success: function(savedTodo) {
+                var updatedTodos = this.state.todos.concat(savedTodo);
+                this.setState({todos: updatedTodos});
+            }.bind(this),
+                error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     },
 
     handleTitleChange: function(event) {

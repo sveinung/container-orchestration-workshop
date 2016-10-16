@@ -11,6 +11,7 @@ class CorsFilter : Filter {
         if (response is HttpServletResponse) {
             response.addHeader("Access-Control-Allow-Origin", "*")
             response.addHeader("Access-Control-Allow-Headers", "Content-Type")
+            response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE")
         }
         chain.doFilter(request, response)
     }
