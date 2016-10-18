@@ -1,14 +1,19 @@
 var Todo = React.createClass({
     getInitialState: function() {
-        return {};
+        return {
+            id: this.props.id,
+            title: this.props.title,
+            description: this.props.description,
+            done: this.props.done
+        };
     },
 
     render: function() {
         return (
-            <li key={this.props.id}>
-                <span>{this.props.title}</span>
+            <li key={this.state.id}>
+                <span>{this.state.title}</span>
                 <span> – </span>
-                <span>{this.props.description}</span>
+                <span>{this.state.description}</span>
                 <input
                     type="checkbox"
                     label="Done?"
@@ -19,7 +24,24 @@ var Todo = React.createClass({
     },
 
     handleChange: function(done) {
-        this.props.updateItem(this.props.id, done.target.checked);
+        $.ajax({
+            url: this.props.url,
+            dataType: "json",
+            contentType: "application/json",
+            type: "PUT",
+            data: JSON.stringify({
+                id: this.state.id,
+                title: this.state.title,
+                description: this.state.description,
+                done: done.target.checked
+            }),
+            success: function(savedTodo) {
+                this.setState({ done: savedTodo.done });
+            }.bind(this),
+                error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 });
 
@@ -37,37 +59,6 @@ var Todos = React.createClass({
             .done(function(todos) {
                 this.setState({todos: todos});
             }.bind(this));
-    },
-
-    updateItem: function(id, done) {
-        var otherTodos = this.state.todos.filter((todo) => {
-            if (todo.id !== id) {
-                return todo;
-            }
-        });
-        var todoToUpdate = this.state.todos.find((todo) => {
-            if (todo.id === id) {
-                return todo;
-            }
-        });
-        todoToUpdate.done = done;
-
-        var updatedTodos = otherTodos.concat(todoToUpdate);
-
-        $.ajax({
-            url: this.props.url,
-            dataType: "json",
-            contentType: "application/json",
-            type: "PUT",
-            data: JSON.stringify(todoToUpdate),
-            success: function(savedTodo) {
-                var updatedTodos = this.state.todos.concat(savedTodo);
-                this.setState({todos: updatedTodos});
-            }.bind(this),
-                error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
     },
 
     handleTitleChange: function(event) {
@@ -117,12 +108,12 @@ var Todos = React.createClass({
             <ol>
                 {this.state.todos.map((todo) => (
                     <Todo
+                        url={this.props.url}
                         key={todo.id}
                         id={todo.id}
                         title={todo.title}
                         description={todo.description}
-                        done={todo.done}
-                        updateItem={this.updateItem} />
+                        done={todo.done} />
                 ))}
             </ol>
             </div>
