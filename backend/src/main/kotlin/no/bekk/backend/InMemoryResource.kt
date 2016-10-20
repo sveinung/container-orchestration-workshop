@@ -38,8 +38,8 @@ class InMemoryResource {
         return ResponseEntity(todo, HttpStatus.OK)
     }
 
-    @RequestMapping(value = "v1/{id}", method = arrayOf(RequestMethod.POST))
-    fun delete(@RequestParam("id") id: Int) : ResponseEntity<Any> {
+    @RequestMapping(value = "v1/{id}", method = arrayOf(RequestMethod.DELETE))
+    fun delete(@PathVariable("id") id: Int) : ResponseEntity<Any> {
         if (!todos.contains(id)) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }

@@ -18,7 +18,8 @@ var Todo = React.createClass({
                     type="checkbox"
                     label="Done?"
                     checked={this.state.done}
-                    onChange={this.handleChange}/>
+                    onChange={this.handleChange} />
+                <button onClick={this.handleClick}>Remove</button>
             </li>
         );
     },
@@ -42,6 +43,19 @@ var Todo = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
+    },
+
+    handleClick: function(event) {
+        $.ajax({
+            url: this.props.url + "/" + this.state.id,
+            type: "DELETE",
+            success: function() {
+                this.props.onDelete(this.state.id)
+            }.bind(this),
+                error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 });
 
@@ -59,6 +73,34 @@ var Todos = React.createClass({
             .done(function(todos) {
                 this.setState({todos: todos});
             }.bind(this));
+    },
+
+    render: function() {
+        return (
+            <div>
+            <form onSubmit={this.handleSubmit}>
+                <input
+                    type="text" value={this.state.title}
+                    onChange={this.handleTitleChange} placeholder="Title" />
+                <input
+                    type="text" value={this.state.description}
+                    onChange={this.handleDescriptionChange} placeholder="description"/>
+                <input type="submit" defaultValue="Post" />
+            </form>
+            <ol>
+                {this.state.todos.map((todo) => (
+                    <Todo
+                        url={this.props.url}
+                        key={todo.id}
+                        id={todo.id}
+                        title={todo.title}
+                        description={todo.description}
+                        done={todo.done}
+                        onDelete={this.deleteItem} />
+                ))}
+            </ol>
+            </div>
+        );
     },
 
     handleTitleChange: function(event) {
@@ -93,31 +135,10 @@ var Todos = React.createClass({
         });
     },
 
-    render: function() {
-        return (
-            <div>
-            <form onSubmit={this.handleSubmit}>
-                <input
-                    type="text" value={this.state.title}
-                    onChange={this.handleTitleChange} placeholder="Title" />
-                <input
-                    type="text" value={this.state.description}
-                    onChange={this.handleDescriptionChange} placeholder="description"/>
-                <input type="submit" defaultValue="Post" />
-            </form>
-            <ol>
-                {this.state.todos.map((todo) => (
-                    <Todo
-                        url={this.props.url}
-                        key={todo.id}
-                        id={todo.id}
-                        title={todo.title}
-                        description={todo.description}
-                        done={todo.done} />
-                ))}
-            </ol>
-            </div>
-        );
+    deleteItem: function(id) {
+        this.setState({
+            todos: this.state.todos.filter((todo) => todo.id !== id)
+        });
     }
 });
 
