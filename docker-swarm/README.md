@@ -8,9 +8,11 @@ Installasjon bør utføres før fagdag.
 
 2. Oppsett av miljø
 
-    . cheat.sh
+```Shell
+. cheat.sh
+```
 
-# Discovery
+## Discovery
 
 Standardmetode er token-basert og går via Docker Hub. Det er også mulig å gi klienten
 en liste med IP-adresser, bruke etcd, Consul, eller lignende.
