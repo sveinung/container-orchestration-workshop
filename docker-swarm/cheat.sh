@@ -66,10 +66,42 @@ eval `docker-machine env --swarm swarm-master`
 docker info
 
 # Kjør en kommando i cluster
-docker run -d debian sleep 10
+docker run --detach debian sleep 10
 docker ps
 
-# Kjør opp tre stk. nginx-noder
-docker run -d -p 80:80 nginx
-docker run -d -p 80:80 nginx
-docker run -d -p 80:80 nginx
+# Kjør tre stk. nginx-noder
+docker run --detach --publish 80:80 nginx
+docker run --detach --publish 80:80 nginx
+docker run --detach --publish 80:80 nginx
+
+# Kjør postgres i datasenter b
+docker run --detach --env constraint:dc==b postgres
+docker run --detach --env constraint:dc==b postgres
+
+# Kjører postgres i noder som har region som starter på europe
+docker run --detach --env constraint:region==europe* postgres
+
+#
+# Oppsett av tjenester
+#
+
+# Bygg backend
+cd ../backend
+mvn install # TODO Gjør dette i container?
+docker build -t backend:latest .
+cd -
+
+# Start backend
+backend=`docker run --detach --publish-all backend`
+docker port $backend
+
+# Bygg frontend
+cd ../frontend;
+./build.sh;
+cd -
+
+# Start frontend
+frontend=`docker run --detach --publish-all frontend-nginx`
+docker port $frontend
+
+# TODO Koble sammen frontend og backend med network overlay
