@@ -79,7 +79,6 @@ var Todos = React.createClass({
     render: function() {
         return (
         <div>
-        <hr/>
         <div className="row">
             <div className="col-md-6 col-md-offset-3">
             <form onSubmit={this.handleSubmit}>

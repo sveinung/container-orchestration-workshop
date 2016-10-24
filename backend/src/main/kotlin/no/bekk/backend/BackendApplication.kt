@@ -7,10 +7,19 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import java.net.InetAddress
 import javax.sql.DataSource
 
 @SpringBootApplication
 open class BackendApplication {
+
+    companion object {
+        val jdbcUrl = System.getenv("JDBC_URL") ?: "jdbc:h2:mem:test"
+        val username = System.getenv("JDBC_USERNAME") ?: "user"
+        val password = System.getenv("JDBC_PASSWORD") ?: "pass"
+        val hostname = InetAddress.getLocalHost().getHostName()
+    }
+
     @Bean
     open fun corsFilter(): FilterRegistrationBean {
         val registration = FilterRegistrationBean()
@@ -24,9 +33,9 @@ open class BackendApplication {
     open fun datasource(): DataSource {
         val pool = HikariDataSource()
 
-        pool.jdbcUrl = System.getenv("JDBC_URL") ?: "jdbc:h2:mem:test"
-        pool.username = System.getenv("JDBC_USERNAME") ?: "user"
-        pool.password = System.getenv("JDBC_PASSWORD") ?: "pass"
+        pool.jdbcUrl = jdbcUrl
+        pool.username = username
+        pool.password = password
         return pool
     }
 
