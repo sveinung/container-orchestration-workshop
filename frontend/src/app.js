@@ -10,17 +10,18 @@ var Todo = React.createClass({
 
     render: function() {
         return (
-            <li key={this.state.id}>
-                <span>{this.state.title}</span>
-                <span> – </span>
-                <span>{this.state.description}</span>
-                <input
-                    type="checkbox"
-                    label="Done?"
-                    checked={this.state.done}
-                    onChange={this.handleChange} />
-                <button onClick={this.handleClick}>Remove</button>
-            </li>
+            <tr key={this.state.id}>
+                <td>
+                    <input
+                        type="checkbox"
+                        label="Done?"
+                        checked={this.state.done}
+                        onChange={this.handleChange} />
+                </td>
+                <td>{this.state.title}</td>
+                <td>{this.state.description}</td>
+                <td><button className="btn btn-danger" onClick={this.handleClick}>Remove</button></td>
+            </tr>
         );
     },
 
@@ -77,29 +78,51 @@ var Todos = React.createClass({
 
     render: function() {
         return (
-            <div>
+        <div>
+        <hr/>
+        <div className="row">
+            <div className="col-md-6 col-md-offset-3">
             <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
                 <input
+                    className="form-control"
                     type="text" value={this.state.title}
                     onChange={this.handleTitleChange} placeholder="Title" />
+                </div>
+                <div className="form-group">
                 <input
+                    className="form-control"
                     type="text" value={this.state.description}
                     onChange={this.handleDescriptionChange} placeholder="description"/>
-                <input type="submit" defaultValue="Post" />
+                </div>
+                <input className="btn btn-default" type="submit" defaultValue="Post" />
             </form>
-            <ol>
-                {this.state.todos.map((todo) => (
-                    <Todo
-                        url={this.props.url}
-                        key={todo.id}
-                        id={todo.id}
-                        title={todo.title}
-                        description={todo.description}
-                        done={todo.done}
-                        onDelete={this.deleteItem} />
-                ))}
-            </ol>
             </div>
+        </div>
+        <hr/>
+        <table className="table table-striped">
+            <thead>
+                <tr>
+                    <th>Done</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Delete?</th>
+                </tr>
+            </thead>
+            <tbody>
+            {this.state.todos.map((todo) => (
+                <Todo
+                    url={this.props.url}
+                    key={todo.id}
+                    id={todo.id}
+                    title={todo.title}
+                    description={todo.description}
+                    done={todo.done}
+                    onDelete={this.deleteItem} />
+            ))}
+            </tbody>
+        </table>
+        </div>
         );
     },
 
@@ -144,5 +167,5 @@ var Todos = React.createClass({
 
 ReactDOM.render(
     <Todos url="http://localhost:8080/v1" />,
-    document.getElementById('container')
+    document.getElementById('reactContainer')
 );
