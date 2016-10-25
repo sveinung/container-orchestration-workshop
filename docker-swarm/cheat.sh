@@ -105,3 +105,39 @@ frontend=`docker run --detach --publish-all frontend-nginx`
 docker port $frontend
 
 # TODO Koble sammen frontend og backend med network overlay
+
+#
+# Swarm mode
+#
+
+# Opprett virtuelle maskiner
+docker-machine create --driver virtualbox manager1
+docker-machine create --driver virtualbox worker1
+docker-machine create --driver virtualbox worker2
+
+# Konfigurer swarm manager
+docker ls
+docker ssh manager1
+#docker swarm init --advertise-addr <ADDR FROM LS>
+
+# Se kommando for join
+docker swarm join-token worker
+
+# Se status
+docker info
+
+# Info om noder
+docker node ls
+
+# Joining swarm  (output fra manager)
+ docker swarm join \
+    --token ...token her... \
+    192.168.99.100:2377
+
+# Konfigurer swarm worker
+# - må opprette registry eller overvøre images til alle workers
+eval `docker-machine env manager1` # egentlig master1, men bommet med første ssh
+docker service
+
+backend=`docker service create --publish 80 --name backend backend`
+docker service ls # vent til replicas er større enn 0
