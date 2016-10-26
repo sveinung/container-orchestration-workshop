@@ -165,6 +165,6 @@ var Todos = React.createClass({
 });
 
 ReactDOM.render(
-    <Todos url="http://localhost:8080/v1" />,
+    <Todos url="/backend/v1" />,
     document.getElementById('reactContainer')
 );

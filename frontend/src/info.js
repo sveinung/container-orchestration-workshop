@@ -13,7 +13,7 @@ var Info = React.createClass({
     }
 });
 
-$.ajax("http://localhost:8080/info")
+$.ajax("/backend/info")
   .done(function(info) {
         ReactDOM.render(
             <Info info={info} />,

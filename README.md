@@ -33,7 +33,52 @@ Mål:
 - Periodiske jobber
 - One cluster to rule them all vs. flere cluster (ett cluster til alle miljø?)
 
-Oppgaver:
+Applikasjoner
+=============
 
+Frontend
+--------
+
+```
+Docker-image: smat/frontend
+```
+
+React-frontend for å lagre TODOs. Kjører på `/` og port `80`. Forventer at
+backenden kjører på samme host på `/backend`.
+
+Backend
+-------
+
+```
+Docker-image: smat/backend
+```
+
+Tjeneste for å lagre TODOs. Lagrer per default i en in-memory-database, men det
+ligger inne drivere for både MySQL og Postgres.
+
+Kjører på `/backend` og port `8080`.
+
+Appen kommuniserer også med en annen tjeneste som han ansvar for tags.
+
+### Miljøvariabler
+
+ * `JDBC_URL` Url på JDBC format. Eksempel: jdbc:mysql://host:port/database
+ * `JDBC_USERNAME` Brukernavn til databasen
+ * `JDBC_PASSWORD` Passord til databasen
+ * `SERVICE_ENDPOINT` URL til tjenesten Service. Eksempel: http://ip:port
+
+
+Service
+-------
+
+Har ansvar for tags.
+
+```
+Docker-image: smat/service
+```
+
+
+Oppgaver:
+=========
 
 
