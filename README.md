@@ -82,3 +82,14 @@ Oppgaver:
 =========
 
 
+
+Utvikling
+=========
+
+```bash
+# Start backend-appen i IntelliJ
+npm install
+node dev.js
+
+# Gå til localhost:3000
+```

@@ -1,0 +1,22 @@
+{
+  "name": "container-orchestration-workshop",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dev.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sveinung/container-orchestration-workshop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sveinung/container-orchestration-workshop/issues"
+  },
+  "homepage": "https://github.com/sveinung/container-orchestration-workshop",
+  "dependencies": {
+    "http-proxy": "^1.15.2",
+    "express": "^4.14.0",
+    "express-http-proxy": "^0.7.4"
+  }
+}
