@@ -14,20 +14,21 @@ class TagService {
             .readTimeout(5, TimeUnit.MINUTES)
             .build()
 
-    private val endpoint: String = System.getenv("SERVICE_ENDPOINT") ?: "http://localhost:8081"
-
     fun getTags(): List<String> {
+        if (!BackendApplication.usesTags) {
+            return listOf()
+        }
+
         try {
-            println("Refresh from " + endpoint)
+            println("Fetching from " + BackendApplication.serviceEndpoint)
             val response = client
                     .newCall(Request.Builder()
-                            .url(endpoint + "/v1")
+                            .url(BackendApplication.serviceEndpoint + "/v1")
                             .build())
                     .execute()
             val body = response.body()
             if (response.code() == 200) {
                 val tags = Gson().fromJson(body.string(), List::class.java)
-                println("Refreshing: " + tags)
                 return tags as List<String>
             }
         } catch (re: RuntimeException) {

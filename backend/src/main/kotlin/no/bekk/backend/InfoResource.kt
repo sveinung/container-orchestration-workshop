@@ -12,13 +12,15 @@ class InfoResource {
         return Info(
                 isInMemory,
                 BackendApplication.jdbcUrl,
-                BackendApplication.hostname
+                BackendApplication.hostname,
+                BackendApplication.usesTags
         )
     }
 
     data class Info(
             val jdbcInMemory: Boolean,
             val jdbcUrl: String,
-            var hostname: String
+            var hostname: String,
+            val usesTags: Boolean
     )
 }

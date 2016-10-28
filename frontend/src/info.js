@@ -9,6 +9,11 @@ var Info = React.createClass({
                 <div className="col-md-2">
                     Hostname: <span className="label label-info">{this.props.info.hostname}</span>
                 </div>
+                <div className="col-md-2">
+                    Uses tags: <span className="label label-info">
+                        {this.props.info.usesTags ? "Yes" : "No"}
+                    </span>
+                </div>
             </div>;
     }
 });
