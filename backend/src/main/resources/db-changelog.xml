@@ -15,5 +15,11 @@
             <column name="done" type="boolean"/>
         </createTable>
     </changeSet>
+    
+    <changeSet id="add-tag-field" author="sveinung">
+        <addColumn tableName="todo">
+            <column name="tag" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

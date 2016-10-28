@@ -29,7 +29,8 @@ class DatabaseResource @Autowired constructor(ds: DataSource) {
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("description"),
-                    rs.getBoolean("done")
+                    rs.getBoolean("done"),
+                    rs.getString("tag")
             )
         })
     }
@@ -52,13 +53,14 @@ class DatabaseResource @Autowired constructor(ds: DataSource) {
         input.addValue("title", todo.title)
         input.addValue("description", todo.description)
         input.addValue("done", todo.done)
+        input.addValue("tag", todo.tag)
         return input
     }
 
     @RequestMapping(value = "v1", method = arrayOf(RequestMethod.PUT))
     fun update(@RequestBody todo: Todo) : ResponseEntity<Any> {
-        jdbcTemplate.update("UPDATE todo SET title=?, description=?, done=? WHERE id=?",
-                todo.title, todo.description, todo.done, todo.id)
+        jdbcTemplate.update("UPDATE todo SET title=?, description=?, done=?, tag=? WHERE id=?",
+                todo.title, todo.description, todo.done, todo.tag, todo.id)
 
         return ResponseEntity(todo, HttpStatus.OK)
     }
