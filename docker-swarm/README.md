@@ -41,8 +41,7 @@ for mer informasjon.
 ## Oppsett av cluster
 
 Først må vi opprette noder som skal kjøre cluster. Instruksjonene her oppretter virtuelle
-maskiner lokalt, men dette kunne også ha vært EC2-instanser på Amazon, Droplets på DigitalOcean,
-eller lignende.
+maskiner lokalt, men dette kunne også ha vært EC2-instanser på Amazon, Droplets på DigitalOcean eller lignende.
 
     docker-machine create --driver virtualbox manager1
     docker-machine create --driver virtualbox worker1
@@ -56,11 +55,11 @@ følgende kommando:
 
 Du får da en melding tilsvarende:
 
-  To add a worker to this swarm, run the following command:
+    To add a worker to this swarm, run the following command:
 
-    docker swarm join \
-        --token SWMTKN-1-05wmf0o647hh3c6c3ppbglcxsmf919wtfjy3wvbjyalt1kv56w-9t7izz9frphnn4eikq0z1lvvu \
-        192.168.99.100:2377
+        docker swarm join \
+            --token SWMTKN-1-05wmf0o647hh3c6c3ppbglcxsmf919wtfjy3wvbjyalt1kv56w-9t7izz9frphnn4eikq0z1lvvu \
+            192.168.99.100:2377
 
   To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 
