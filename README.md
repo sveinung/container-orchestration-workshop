@@ -1,4 +1,13 @@
+Pre-install
+===========
+- Virtualbox (https://www.virtualbox.org/)
+- Docker (https://docs.docker.com/#welcome-to-the-docs)
+- Vagrant (https://www.vagrantup.com/downloads.html)
+
+
 # container-orchestration-workshop
+
+
 
 Rigg (Stian M og Sveinung):
 - Nettside (statiske ressurser)
@@ -77,9 +86,13 @@ Har ansvar for tags.
 Docker-image: smat/service
 ```
 
+Docker repo
+-----------
 
-Oppgaver:
-=========
+https://hub.docker.com/u/smat/
+
+Oppgaver
+========
 
 Vi skal sette opp et system bestående av følgende komponenter:
 
