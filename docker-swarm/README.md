@@ -1,7 +1,5 @@
 # Docker Swarm
 
-Installasjon bør utføres før fagdag.
-
 ## Installasjon
 
 Installer følgende pakker:
@@ -10,32 +8,15 @@ Installer følgende pakker:
 - [Docker machine](https://docs.docker.com/engine/installation/)
 - [Docker Engine](https://github.com/docker/machine/releases/)
 
-## Kontainere
-
-Vi skal sette opp et system med følgende tjenester:
-
-- Frontend (React-frontend)
-- Backend (backend)
-- Public web (public-web)
-- Tag service (service)
-- Database (MySQL eller PostgreSQL) - bonusoppgave
-
-React-frontend og backend plasseres i et privat nettverk, og blir eksponert til
-utsiden via public-web. For å teste orkestrering over flere maskiner bruker vi
-en eller flere noder per kontainer.
-
 ## Krav til nettverk mellom noder
 
 Følgende porter må være åpne
 
-- TCP port 2377 for cluster management communications
-- TCP and UDP port 7946 for communication among nodes
-- TCP and UDP port 4789 for overlay network traffic
+- TCP port 2377 for cluster-administrering
+- TCP and UDP port 7946 for kommunikasjon mellom noder
+- TCP and UDP port 4789 for overlay network trafikk
 
-If you are planning on creating an overlay network with encryption (--opt encrypted), you
-will also need to ensure protocol 50 (ESP) is open.
-
-Se [Getting started with swarm Mode](https://docs.docker.com/engine/swarm/swarm-tutorial/#/install-docker-engine-on-linux-machines)
+Hvis `--opt encrypted` skal brukes, må også port 50 (ESP) være åpen. Se [Getting started with swarm Mode](https://docs.docker.com/engine/swarm/swarm-tutorial/#/install-docker-engine-on-linux-machines)
 for mer informasjon.
 
 ## Oppsett av cluster
@@ -76,14 +57,59 @@ Denne skal gi et resultat tilsvarende dette:
     9hi1wntoop26klaezurpfjpvv    worker1   Ready   Active        
 
 Du har nå en cluster med tre noder som kan kjøre tjenester. For å sette opp privat
-kommunikasjon mellom nodene så oppretter vi et
+kommunikasjon mellom nodene, oppretter vi et
 [overlay network](https://docs.docker.com/engine/swarm/networking/):
 
     eval `docker-machine env manager1`
     docker network create --driver overlay workshop
 
 Dette setter opp [service discovery](https://docs.docker.com/engine/swarm/networking/#/use-swarm-mode-service-discovery), der
-tjenester tilgjengeliggjøres vha. DNS-oppføringer.
+tjenester tilgjengeliggjøres via interne DNS-oppføringer.
+
+## Kjøre tjenester
+
+Docker swarm mode administreres via en manager-node. Dette kan gjøres via en vanlig ssh-tilkobling,
+eller direkte med docker-kommandoen etter at miljøvariabler er satt opp med docker machine:
+
+    eval `docker-machine env manager1`
+
+Vi bruker `docker service` til administrering av tjenester som kjører i cluster. Bruk
+[service create](https://docs.docker.com/engine/reference/commandline/service_create/) for
+å opprette nye tjenester:
+
+    docker service create \
+      --name frontend \
+      --network workshop \
+      --publish 80:80 \
+      smat/frontend
+
+Tjenesten er tilgjengelig til nettverket `workshop` via en intern DNS-oppføring med
+navnet `frontend`. Den er også tilgjengelig på port 80 via IP-adressen til alle nodene i
+cluster, se [routing mesh](https://docs.docker.com/engine/swarm/ingress/) for mer informasjon
+om rutingen.
+
+## Hente informasjon om tjenester
+
+List opp kjørende tjenester med [service ls](https://docs.docker.com/engine/reference/commandline/service_ls/):
+
+    docker service ls
+
+Finn informasjon om kjørende instanser av en enkelttjeneste med [service ps](https://docs.docker.com/engine/reference/commandline/service_ps/). Dette gir blant annet
+informasjon om hvor tjenesten kjører.
+
+    docker service ps frontend
+
+Vis detaljert informasjon for tjeneste med [service inspect](https://docs.docker.com/engine/reference/commandline/service_inspect/):
+
+    docker service inspect --pretty frontend
+
+Se logg fra `STDOUT` og `STDERR` med [logs](https://docs.docker.com/engine/reference/commandline/logs/)-kommandoen:
+
+    docker logs --follow CONTAINER_ID
+
+Merk at `docker logs` må kjøres på noden der en instans av tjenesten kjører. Finn node med `docker service ps frontend`,
+koble til noden med `docker-machine env NAVN_PÅ_NODE`, finn `CONTAINER_ID` med `docker ps`, og kjør `docker logs`
+for å lese logg.
 
 ## Bygg og distribuer tjenester
 
