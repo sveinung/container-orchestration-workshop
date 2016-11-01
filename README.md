@@ -81,7 +81,49 @@ Docker-image: smat/service
 Oppgaver:
 =========
 
+Vi skal sette opp et system bestående av følgende komponenter:
 
+- Frontend
+- Backend
+- Tag service
+- Database
+
+Frontend er en web-applikasjon for å liste ut og redigere TODO-oppføringer. Backend
+lagrer TODO-oppføringene i en database og tilgjengeliggjør emneknagger som hentes
+via tag service.
+
+1.  Sett opp [frontend](https://hub.docker.com/r/smat/frontend/) som en tjeneste
+    tilgjengelig via port 80. Test at applikasjonen er oppe ved å gå inn på http://FRONTEND
+    i en nettleser. Hvis alt fungerer som forventet vil du se en enkel nettside for utlisting av
+    TODO-oppføringer. *Merk: det er forventet at applikasjonen gir feilmeldinger inntil vi setter opp backend*
+
+2.  Sett opp [backend](https://hub.docker.com/r/smat/backend/) som en tjeneste tilgjengelig via port 8080. Test
+    at applikasjonen kjører ved å åpne http://BACKEND:8080/backend/info i en nettleser. Når tjenesten kjører
+    skal du få respons med statuskode `200` og JSON-data som innhold.
+
+3.  Nå som vi har både frontend og backend kjørende, er det på tide å få opp en løsning
+    for [service discovery](https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/) slik
+    at frontend-applikasjonen kan kommunisere med backend. Sett opp en lastbalanserer som tilgjengeliggjør
+    frontend på http://LASTBALANSERER/ og backend på http://LASTBALANSERER/backend. Test at løsningen
+    fungerer ved å gå inn på http://LASTBALANSERER og legg inn TODO-oppføringer.
+
+4.  Neste steg er kommunikasjon internt mellom tjenestene. Målet med denne oppgaven er at backend skal ha tilgang på
+    en tjeneste som tilgjengeliggjør emneknagger. Sett opp [tag service](https://hub.docker.com/r/smat/service/)
+    som en tjeneste som gir internt nettverk mellom tjenestene tilgang til port 8080 og konfigurer backend
+    til å bruke tag service ved å passere inn miljøvariabelen `SERVICE_ENDPOINT`. Test at tjenesten er satt
+    opp riktig ved å gå inn på http://LASTBALANSERER og sjekk at du får tilgang på en en liste med emneknagger
+    som kan brukes på nye TODO-oppføringer.
+
+5.  Frem til nå har vi lagret TODO-oppføringene i en in-memory database som forsvinner når
+    backend-tjeneste stoppes. I denne oppgaven skal vi legge til persistent lagring ved å innføre
+    en ekstern database. Stopp alle instanser av backend, for så å starte de opp igjen. Observer
+    at huskelisten nå er tømt. Fiks problemet ved å skifte ut in-memory database med PostgreSQL
+    eller MySQL. Sjekk at persistent lagring fungerer ved å ta ned backend-tjeneste.
+
+6.  Sjekk hvordan skalering fungerer ved å øke og minke antallet instanser av backend
+    og tag service. Hvor kjører de repliserte instansene? Hva skjer når du skalerer opp/ned?
+    Fungerer fortsatt kommunikasjonen mellom backend og tag service? Hva skjer hvis du tar
+    ned en vilkårlig node?
 
 Utvikling
 =========
