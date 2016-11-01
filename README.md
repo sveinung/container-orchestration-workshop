@@ -92,12 +92,12 @@ Frontend er en web-applikasjon for å liste ut og redigere TODO-oppføringer. Ba
 lagrer TODO-oppføringene i en database og tilgjengeliggjør emneknagger som hentes
 via tag service.
 
-1.  Sett opp [frontend](https://hub.docker.com/r/smat/frontend/) som en tjeneste
+1.  Sett opp [smat/frontend](https://hub.docker.com/r/smat/frontend/) som en tjeneste
     tilgjengelig via port 80. Test at applikasjonen er oppe ved å gå inn på http://FRONTEND
     i en nettleser. Hvis alt fungerer som forventet vil du se en enkel nettside for utlisting av
     TODO-oppføringer. *Merk: det er forventet at applikasjonen gir feilmeldinger inntil vi setter opp backend*
 
-2.  Sett opp [backend](https://hub.docker.com/r/smat/backend/) som en tjeneste tilgjengelig via port 8080. Test
+2.  Sett opp [smat/backend](https://hub.docker.com/r/smat/backend/) som en tjeneste tilgjengelig via port 8080. Test
     at applikasjonen kjører ved å åpne http://BACKEND:8080/backend/info i en nettleser. Når tjenesten kjører
     skal du få respons med statuskode `200` og JSON-data som innhold.
 
@@ -108,7 +108,7 @@ via tag service.
     fungerer ved å gå inn på http://LASTBALANSERER og legg inn TODO-oppføringer.
 
 4.  Neste steg er kommunikasjon internt mellom tjenestene. Målet med denne oppgaven er at backend skal ha tilgang på
-    en tjeneste som tilgjengeliggjør emneknagger. Sett opp [tag service](https://hub.docker.com/r/smat/service/)
+    en tjeneste som tilgjengeliggjør emneknagger. Sett opp [smat/service](https://hub.docker.com/r/smat/service/)
     som en tjeneste som gir internt nettverk mellom tjenestene tilgang til port 8080 og konfigurer backend
     til å bruke tag service ved å passere inn miljøvariabelen `SERVICE_ENDPOINT`. Test at tjenesten er satt
     opp riktig ved å gå inn på http://LASTBALANSERER og sjekk at du får tilgang på en en liste med emneknagger
