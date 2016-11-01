@@ -125,6 +125,10 @@ via tag service.
     Fungerer fortsatt kommunikasjonen mellom backend og tag service? Hva skjer hvis du tar
     ned en vilkårlig node?
 
+7.  Bygg en ny versjon av frontend ved å endre på teksten i HTML-koden (koden ligger i katalogen `frontend`).
+    Rull ut ny versjon og sjekk at endringene finnes på http://LASTBALANSERER. Dette bør gjøres som en nedetidsfri
+    deploy.
+
 Utvikling
 =========
 
