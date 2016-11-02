@@ -1,4 +1,8 @@
-# Docker Swarm
+# Docker Swarm Mode
+
+I denne workshop-en bruker vi [Docker swarm mode](https://docs.docker.com/engine/swarm/) og krever
+derfor docker versjon 12 eller nyere. For eldre versjoner er [Docker Swarm](https://docs.docker.com/swarm/)
+tilgjengelig med endel av den samme funksjonaliteten, men ulik API.
 
 ## Installasjon
 
@@ -111,13 +115,40 @@ Merk at `docker logs` må kjøres på noden der en instans av tjenesten kjører.
 koble til noden med `docker-machine env NAVN_PÅ_NODE`, finn `CONTAINER_ID` med `docker ps`, og kjør `docker logs`
 for å lese logg.
 
-## Bygg og distribuer tjenester
+## Skalering
 
-TODO Instruksjoner for å sette opp systemet uten hjelpekode.
+For å skalere en tjeneste bruker vi [service scale](https://docs.docker.com/engine/swarm/swarm-tutorial/scale-service/). Følgende
+kommando skalerer backend-tjensten til å kjøre på tre noder:
 
-TODO Opprett docker registry slik at distribuering av images ikke må gjøres manuelt.
+    docker service scale backend=3
 
-Dette forutsetter at cluster er opprettet som beskrevet ovenfor. Kjør følgende
-kommando fra katalogen docker-swarm:
+## Oppdatere tjeneste
 
-    ./workshop.sh
+For å oppdatere tjenester brukes [service update](https://docs.docker.com/engine/swarm/swarm-tutorial/rolling-update/). F.eks.
+
+    docker service update --image backend:v2 backend
+
+For testing, kan det være aktuelt å distribuere images manuelt ved å bygge
+ny image av koden på en node, for så å eksportere dette til et arkiv og laste
+inn til resterende noder, følgende kan brukes til å endre frontend (kjøres
+fra katalogen frontend):
+
+    # Endre tittel (bruk ev. en teksteditor og endre manuelt)
+    sed -i 's/<h1>.\+<\/h1>/<h1>Todo-app v2<\/h1>/' src/index.html
+
+    # Lag nytt image (kan senere distribueres til docker registry)
+    eval `docker-machine env manager1`
+    docker build -t frontend:v2 .
+    docker save frontend:v2 > frontend-v2.tar
+
+    # Last image til worker-noder
+    eval `docker-machine env worker1`
+    docker load < frontend-v2.tar
+    eval `docker-machine env worker2`
+    docker load < frontend-v2.tar
+
+    # Oppdater cluster med ny versjon
+    eval `docker-machine env manager1`
+    docker service update --image frontend:v2 frontend
+
+Sjekk at ny versjon kjører med `docker service ls`.
