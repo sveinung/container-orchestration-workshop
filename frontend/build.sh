@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t frontend-nginx .
+docker build -t smat/frontend .
