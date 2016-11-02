@@ -118,7 +118,9 @@ via tag service.
     backend-tjeneste stoppes. I denne oppgaven skal vi legge til persistent lagring ved å innføre
     en ekstern database. Stopp alle instanser av backend, for så å starte de opp igjen. Observer
     at huskelisten nå er tømt. Fiks problemet ved å skifte ut in-memory database med PostgreSQL
-    eller MySQL. Sjekk at persistent lagring fungerer ved å ta ned backend-tjeneste.
+    eller MySQL. Koblingen mellom backen og database settes opp ved hjelp av miljøvariablene
+    `JDBC_URL`, `JDBC_USERNAME` og `JDBC_PASSWORD`, se seksjonen "Applikasjoner" for mer informasjon
+    om miljøvariablene. Sjekk at persistent lagring fungerer ved å ta ned backend-tjeneste.
 
 6.  Sjekk hvordan skalering fungerer ved å øke og minke antallet instanser av backend
     og tag service. Hvor kjører de repliserte instansene? Hva skjer når du skalerer opp/ned?
