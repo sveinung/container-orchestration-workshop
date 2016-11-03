@@ -1,0 +1,16 @@
+{
+    "id": "application",
+    "mem": 128,
+    "cpus": 0.5,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "network": "BRIDGE",
+            "image": "some/application",
+            "portMappings": [
+                { "containerPort": 80, "protocol": "tcp" }
+            ]
+        }
+    }
+}
