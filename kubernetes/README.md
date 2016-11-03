@@ -17,7 +17,7 @@ HTTP-trafikk inn i clusteret med Ingress
 
 ```kubectl create -f nginx-ingress-rc.yaml```
 
-IPen til clusteret er den samme du bruker til å gå mot ingressen du satte opp ```minikube ip```
+```minikube ip``` gir deg IPen som ingressen routes fra
 
 [Dokumentasjon](http://kubernetes.io/docs/user-guide/ingress/)
 
