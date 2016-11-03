@@ -21,11 +21,18 @@ sudo chmod a+w /etc/nomad.d
 
 SCRIPT
 
+$custom = <<SCRIPT
+curl --silent -L "https://github.com/docker/compose/releases/download/1.8.1/docker-compose-$(uname -s)-$(uname -m)" > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+iptables -N DOCKER || true
+SCRIPT
+
 Vagrant.configure(2) do |config|
   config.vm.box = "puphpet/ubuntu1404-x64"
   config.vm.hostname = "nomad"
   config.vm.provision "shell", inline: $script, privileged: false
   config.vm.provision "docker" # Just install it
+  config.vm.provision "shell", inline: $custom, privileged: true
 
 
   # Consul ui: 8500
