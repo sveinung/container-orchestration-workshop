@@ -41,6 +41,14 @@ For å få Fabio til å fungere må man tagge servicene med f.eks. `urlprefix-/`
 for å gjøre appen tilgjengelig på rota, eller `urlprefix-/backend` for å gjør
 noe tilgjengelig på `/backend`.
 
+Hvis ikke alt kommer opp riktig, prøv å restart clusteret:
+
+```bash
+docker logs kompaas_fabio
+docker-compose down
+docker-compose up -d
+```
+
 
 Introduksjon
 ------------
