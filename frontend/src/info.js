@@ -24,6 +24,9 @@ $.ajax("/backend/info")
             <Info info={info} />,
             document.getElementById('info')
         );
-    }.bind(this)
-);
-
+  }.bind(this))
+  .fail(function(xhr, errorText, thrown) {
+        var el = document.getElementById('info');
+        el.className = "label label-danger";
+        el.textContent = "Error getting info from backend (/backend/info): " + xhr.status + ": " + xhr.statusText;
+  }.bind(this));
