@@ -14,6 +14,8 @@ Du kan velge mellom:
 
 Se underkatalogene for hver plattform for detaljer.
 
+Dette er først og fremst for å få litt erfaring med plattformene. Vi har ikke nødvendigvis svarene på alt. Feiling er også læring. ;)
+
 Applikasjonen
 -------------
 
