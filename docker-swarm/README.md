@@ -1,7 +1,7 @@
 # Docker Swarm Mode
 
 I denne workshop-en bruker vi [Docker swarm mode](https://docs.docker.com/engine/swarm/) og krever
-derfor docker versjon 12 eller nyere. For eldre versjoner er [Docker Swarm](https://docs.docker.com/swarm/)
+derfor docker versjon 1.12 eller nyere. For eldre versjoner er [Docker Swarm](https://docs.docker.com/swarm/)
 tilgjengelig med endel av den samme funksjonaliteten, men ulik API.
 
 ## Installasjon
@@ -152,3 +152,8 @@ fra katalogen frontend):
     docker service update --image frontend:v2 frontend
 
 Sjekk at ny versjon kjører med `docker service ls`.
+
+## PostgreSQL
+
+
+    docker service --name database -e POSTGRES_PASSWORD=heihei -d postgres
