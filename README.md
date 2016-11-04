@@ -42,6 +42,28 @@ Mål:
 - Periodiske jobber
 - One cluster to rule them all vs. flere cluster (ett cluster til alle miljø?)
 
+## Tips
+
+For de som bruker Vagrant
+
+Installer Vagrant plugin (vagrant-cachier)[https://github.com/fgrehm/vagrant-cachier] (`vagrant plugin install vagrant-cachier`). Den vil lagre den lokale cache-katalogen
+til en god del pakkesystemer på Vagrant hosten, og så tilgjengeliggjøre cachen på guest maskinene, slik at man slipper å laste
+ned pakkene hver gang man kjører `vagrant destroy`/`vagrant up`
+
+Legg inn dette i Vagrantfile for å skru den på:
+
+```
+Vagrant.configure("2") do |config|
+  ...
+  if Vagrant.has_plugin?('vagrant-cachier')
+    config.cache.scope = :box
+  end
+  ...
+end
+
+```
+
+
 Applikasjoner
 =============
 
